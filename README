@@ -1,0 +1,106 @@
+Author:	Simon Laffoy
+
+baleogtf@yahoo.ie
+simon.laffoy@ucdconnect.ie
+0877679866
+
+--------------------------------------------------------------------------
+UPDATE	13/12/13
+
+The following comment has been added.
+
+The genetic algorithm that I created I believe is fast, but each of the three functions
+detailed below perform 2 or more GAs and so are not as fast as a function performing just
+a single GA. For example the function genetic.m performs 2 GAs. If I run it on my computer with the
+arguments genetic( 1000, 10, 100, 1, 2, 3 ) (see below for a description of the arguments), it takes under 30 seconds for the 2 GAs to complete.
+So, naively, I assume it would take under 15 seconds to perform a single GA. If the mutation 
+probability is increased from 3% to 50% (the final argument) then the function takes 45 seconds.
+As one of the 2 GAs performed does not mutate, I assume that most of the increase
+in time is for the mutating GA. So I will naively assume that a single GA with mutation probability of 50% will take 30 seconds 
+to complete (if the other arguments given above remain unchanged).
+
+--------------------------------------------------------------------------
+
+
+This file gives instructions on how to run the MATLAB code.
+
+There are three genetic algorithm programs; genetic.m, genetic2.m and genetic3.m
+
+NOTE WHEN RUNNING ANY OF THESE GENETIC ALGORITHM FUNCTIONS YOU MUST CHOOSE AN EVEN NUMBER FOR
+THE POPULATION SIZE
+________________________________________________________________________
+genetic.m
+
+This function creates a set of objects and an initial population of solutions.
+It then performs two genetic algorithms. The first algorithm has no mutation
+and the second has mutation. The function can be called like so
+
+[ pop, pop1, objects, cost, cost1] = genetic( genCount, popSize, objCount, binSize, k, prob_mutate )
+
+genCount: number of generations to perform for each genetic algorithm
+popSize:  number of solutions in each generation. MUST BE AN EVEN NUMBER
+objCount: the number of objects
+binSize:  the size of the bin and the maximum size of any object
+k:        a constant used in the cost function. Set to 2 for all tests
+prob_mutate: the probability that the mutating genetic algorithm will mutate any solution within a generation
+
+pop and pop1 return the final populations of the mutating and non mutating algorithm respectively
+cost and cost1 return the costs of the final populations of the mutating and non mutating populations respectively.
+objects returns the objects used for the bin packing.
+
+While this function is running it will output the generation number, the average cost,
+maximum cost of the current population and maximum cost of any population so far encountered for both the 
+mutating and non mutating genetic algorithms.
+
+Here is an example function call to paste into Matlab
+
+[ pop, pop1, objects, cost, cost1] = genetic( 1000, 10, 100, 1, 2, 50 );
+_________________________________________________________________________
+genetic2.m
+
+This function creates a set of objects and an initial population of solutions.
+It then performs several genetic algorithms using varying mutation rates.
+
+[ pops, objects, costs, max_per_gen] = genetic2( genCount, popSize, objCount, binSize, k, popCount )
+
+popCount:	the number of genetic algorithms to run. Say for example the value 3 is used, 3
+genetic algorithms will be run with mutation rates of 0%, 50% and 100%. If 4 is used then the mutation
+rates will be 0%, 33%, 67%, 100%, etc...
+
+the returned variable 'pops' is a 3-dimensional array of the final population from
+each of the genetic algorithms. 'costs' is a 3-dimensional array of the costs of the
+final population of each genetic algorithm (in fact there is only 2-d worth of information
+in costs, but it was built as 3-d).
+'max_per_gen' is a matrix listing the best solution obtained in each generation by each genetic algorithm.
+
+Here is an example function call to paste into Matlab.
+
+[ pop, objects, cost, maxs] = genetic2( 1000, 10, 100, 1, 2 , 3);
+
+Here is the function call that was used to generate figure 1 and 2 in the writeup (slow as many generations and 
+genetic algorithms)
+
+[ pop, objects, cost, maxs] = genetic2( 10000, 10, 100, 1, 2 , 6);
+
+__________________________________________________________________________
+genetic3.m
+
+This function creates a set of objects and an initial population of solutions.
+It then performs three genetic algorithms. The first is a non mutating population. The second and third
+mutate with probability defined in the arguments. The difference between these two is that the second
+allows it's best solution to be a candidate for mutation whereas the third does not.
+
+[ pops, objects, costs, max_per_gen] = genetic3( genCount, popSize, objCount, binSize, k, prob_mutate )
+
+All arguments are equivalent to those in genetic.m. All returned variables are equivalent to those
+in genetic2.m
+
+Here is an example function call to paste into Matlab.
+
+[ pop, objects, cost, maxs] = genetic3( 1000, 10, 100, 1, 2, 20);
+
+Here is the function call that was used to generate figure 3 in the writeup (slow as many generations and 
+genetic algorithms)
+
+[ pop, objects, cost, maxs] = genetic3( 10000, 10, 100, 1, 2 , 25);
+______________________________________________________________
